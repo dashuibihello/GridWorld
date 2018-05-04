@@ -57,6 +57,7 @@ class rgbgFilter extends RGBImageFilter
              return (rgb & 0xFF0000FF);       
          }
          
+	 //根据公式将图片调灰
          else if (my_color.equals(COLOR.GREY)) {
              int grey = (int)((((rgb & 0x00FF0000) >> 16) * 0.299) 
             		 + (((rgb & 0x0000FF00) >> 8) * 0.587) + ((rgb & 0x000000FF) * 0.114));
