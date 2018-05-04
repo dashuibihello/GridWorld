@@ -45,20 +45,28 @@ public class ImageProcessorTest
     public void setup() throws Exception {
     	try {
         	parentimage_1 = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp");
+		
+		//goal文件内的图片
         	goalimage_1_red = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_red_goal.bmp");
         	goalimage_1_green = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_green_goal.bmp");
         	goalimage_1_blue = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_blue_goal.bmp");
         	goalimage_1_grey = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_gray_goal.bmp");
+		
+		//通过processor生成的进行比较的图片
         	childimage_1_red = processor.showChanelR(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
         	childimage_1_green = processor.showChanelG(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
         	childimage_1_blue = processor.showChanelB(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
         	childimage_1_grey = processor.showGray(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
         	
         	parentimage_2 = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp");
+		
+		//goal文件内的图片
         	goalimage_2_red = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_red_goal.bmp");
         	goalimage_2_green = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_green_goal.bmp");
         	goalimage_2_blue = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_blue_goal.bmp");
         	goalimage_2_grey = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_gray_goal.bmp");
+		
+		//通过processor生成的进行比较的图片
         	childimage_2_red = processor.showChanelR(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
         	childimage_2_green = processor.showChanelG(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
         	childimage_2_blue = processor.showChanelB(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
@@ -140,8 +148,8 @@ public class ImageProcessorTest
                 child.skip(skipnum);
             }
       }
-       goal.close();
-	   child.close();
+		goal.close();
+		child.close();
        return true;
     }
 }
