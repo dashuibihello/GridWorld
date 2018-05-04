@@ -58,10 +58,8 @@ class rgbgFilter extends RGBImageFilter
          }
          
          else if (my_color.equals(COLOR.GREY)) {
-             int r = (int)(((rgb & 0x00FF0000) >> 16) * 0.299);
-             int g = (int)(((rgb & 0x0000FF00) >> 8) * 0.587);
-             int b = (int)((rgb & 0x000000FF) * 0.114);
-             int grey = (int)(r + g + b);
+             int grey = (int)((((rgb & 0x00FF0000) >> 16) * 0.299) 
+            		 + (((rgb & 0x0000FF00) >> 8) * 0.587) + ((rgb & 0x000000FF) * 0.114));
              
              //Alpha:24-31
              return (rgb & 0xFF000000 | grey << 16 | grey << 8 | grey);
