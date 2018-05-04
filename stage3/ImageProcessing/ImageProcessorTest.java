@@ -1,87 +1,147 @@
-package imageioimplement;
+package helloworld;
 
-import static org.junit.assert.*;
+import static org.junit.Assert.*;
 
-import org.junit.before;
-import org.junit.test;
-import static org.junit.assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.fileinputstream;
-import java.util.collection;
-import java.util.arrays;  
+import java.awt.Color;
+import java.awt.Image;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import java.awt.*;
-import javax.imageio.*;
-import java.lang.string;
-import org.junit.runner.runwith;  
-import org.junit.runners.parameterized;  
-import org.junit.runners.parameterized.parameters;  
+import imagereader.IImageIO;
+import imagereader.IImageProcessor;  
 
-@runwith(parameterized.class)
-public class imagereadertest
+
+public class ImageProcessorTest
 {
-    //private string filepath0;
-    //private string filepath1;
-    private fileinputstream pfile0;
-    private fileinputstream pfile1;
-    private image pimage0;
-    private image pimage1;
+    IImageIO imageioer = new ImplementImageIO();
+    IImageProcessor processor = new ImplementImageProcessor();
+    private Image parentimage_1;
+    private Image parentimage_2;
+    private Image goalimage_1_red;
+    private Image goalimage_1_green;
+    private Image goalimage_1_blue;
+    private Image goalimage_1_grey;
+    private Image childimage_1_red;
+    private Image childimage_1_green;
+    private Image childimage_1_blue;
+    private Image childimage_1_grey;
+    
+    private Image goalimage_2_red;
+    private Image goalimage_2_green;
+    private Image goalimage_2_blue;
+    private Image goalimage_2_grey;
+    private Image childimage_2_red;
+    private Image childimage_2_green;
+    private Image childimage_2_blue;
+    private Image childimage_2_grey;
+   
+    //input all image
+    @Before
+    public void setup() throws Exception {
+    	try {
+        	parentimage_1 = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp");
+        	goalimage_1_red = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_red_goal.bmp");
+        	goalimage_1_green = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_green_goal.bmp");
+        	goalimage_1_blue = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_blue_goal.bmp");
+        	goalimage_1_grey = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_gray_goal.bmp");
+        	childimage_1_red = processor.showChanelR(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
+        	childimage_1_green = processor.showChanelG(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
+        	childimage_1_blue = processor.showChanelB(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
+        	childimage_1_grey = processor.showGray(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/1.bmp"));
+        	
+        	parentimage_2 = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp");
+        	goalimage_2_red = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_red_goal.bmp");
+        	goalimage_2_green = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_green_goal.bmp");
+        	goalimage_2_blue = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_blue_goal.bmp");
+        	goalimage_2_grey = imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/2_gray_goal.bmp");
+        	childimage_2_red = processor.showChanelR(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
+        	childimage_2_green = processor.showChanelG(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
+        	childimage_2_blue = processor.showChanelB(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
+        	childimage_2_grey = processor.showGray(imageioer.myRead("/home/kiddion/Downloads/bmptest_v3/bmptest/2.bmp"));
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
+    }
 
-    
-    @parameters   
-    public static collection<object[]> preparedata()
-    {  
-         return arrays.aslist(new object[][]{
-                 {"/home/gumc/bitmap/bmptest/my/1_blue_goal.bmp", "/home/gumc/bitmap/bmptest/goal/1_blue_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/1_red_goal.bmp", "/home/gumc/bitmap/bmptest/goal/1_red_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/1_green_goal.bmp", "/home/gumc/bitmap/bmptest/goal/1_green_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/1_gray_goal.bmp", "/home/gumc/bitmap/bmptest/goal/1_gray_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/2_blue_goal.bmp", "/home/gumc/bitmap/bmptest/goal/2_blue_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/2_red_goal.bmp", "/home/gumc/bitmap/bmptest/goal/2_red_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/2_green_goal.bmp", "/home/gumc/bitmap/bmptest/goal/2_green_goal.bmp"},
-                 {"/home/gumc/bitmap/bmptest/my/2_gray_goal.bmp", "/home/gumc/bitmap/bmptest/goal/2_gray_goal.bmp"}});
-    }  
-    
-    public imagereadertest(string file1, string file2) throws exception 
-    {
-        //this.filepath0 = file1;
-        //this.filepath1 = file2;
-        this.pfile0 = new fileinputstream(file1);
-        this.pfile1 = new fileinputstream(file2);
-        this.pimage0 = imageio.read(pfile0);
-        this.pimage1 = imageio.read(pfile1);
+    //比较位图宽度
+    @Test
+    public void testwidth()
+    {   
+    	assertEquals(parentimage_1.getWidth(null), goalimage_1_red.getWidth(null));
+    	assertEquals(parentimage_2.getWidth(null), goalimage_2_red.getWidth(null));
+        assertEquals(childimage_1_red.getWidth(null), goalimage_1_red.getWidth(null));
+        assertEquals(childimage_1_green.getWidth(null), goalimage_1_green.getWidth(null));
+        assertEquals(childimage_1_blue.getWidth(null), goalimage_1_blue.getWidth(null));
+        assertEquals(childimage_1_grey.getWidth(null), goalimage_1_grey.getWidth(null));
+        assertEquals(childimage_2_red.getWidth(null), goalimage_2_red.getWidth(null));
+        assertEquals(childimage_2_green.getWidth(null), goalimage_2_green.getWidth(null));
+        assertEquals(childimage_2_blue.getWidth(null), goalimage_2_blue.getWidth(null));
+        assertEquals(childimage_2_grey.getWidth(null), goalimage_2_grey.getWidth(null));
     }
     
-    @before
-    public void setup() throws exception {
-    }
-
-    //比较分辨率（长宽像素值都相等）
-    @test
-    public void testresolution()
-    {
-        assertequals(pimage0.getheight(null), pimage1.getheight(null));
-        assertequals(pimage0.getwidth(null), pimage1.getwidth(null));
-    }
+    //比较位图高度
+    @Test
+    public void testHeight() {
+    	assertEquals(parentimage_1.getHeight(null), goalimage_1_red.getHeight(null));
+    	assertEquals(parentimage_2.getHeight(null), goalimage_2_red.getHeight(null));
+        assertEquals(childimage_1_red.getHeight(null), goalimage_1_red.getHeight(null));
+        assertEquals(childimage_1_green.getHeight(null), goalimage_1_green.getHeight(null));
+        assertEquals(childimage_1_blue.getHeight(null), goalimage_1_blue.getHeight(null));
+        assertEquals(childimage_1_grey.getHeight(null), goalimage_1_grey.getHeight(null));
+        assertEquals(childimage_2_red.getHeight(null), goalimage_2_red.getHeight(null));
+        assertEquals(childimage_2_green.getHeight(null), goalimage_2_green.getHeight(null));
+        assertEquals(childimage_2_blue.getHeight(null), goalimage_2_blue.getHeight(null));
+        assertEquals(childimage_2_grey.getHeight(null), goalimage_2_grey.getHeight(null));
+	}
     
     //比较像素值
-    @test
-    public void testpixvalue() throws exception 
-    {
-        int sizeimage = pimage0.getheight(null) * pimage1.getwidth(null);
-            
-        //将两个图片的位图数据部分全部读出，比较。
-        byte imagecolor0[] = new byte[sizeimage];
-        byte imagecolor1[] = new byte[sizeimage];
-            
-        //跳过不属于位图信息的部分
-        pfile0.skip(54);
-        pfile1.skip(54);
-            
-        pfile0.read(imagecolor0, 0, sizeimage);
-        pfile1.read(imagecolor1, 0, sizeimage);
-        //是否相等
-        assertequals(imagecolor1, imagecolor1);    
+    @Test
+    public void testpixvalue() throws IOException {
+    	imageioer.myWrite(childimage_1_red, "/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_red_child.bmp");
+    	imageioer.myWrite(childimage_1_grey, "/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_grey_child.bmp");
+    	assertEquals(textpix("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_red_goal.bmp", "/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_red_child.bmp", parentimage_1.getHeight(null), parentimage_1.getWidth(null), 24), true);
+    	assertEquals(textpix("/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_gray_goal.bmp", "/home/kiddion/Downloads/bmptest_v3/bmptest/goal/1_grey_child.bmp", parentimage_2.getHeight(null), parentimage_2.getWidth(null), 24), true);
     }
-
+    
+    @SuppressWarnings("resource")
+	boolean textpix(String goalPath, String childPath, int height, int width, int bitcount) throws IOException {
+		BufferedInputStream child = new BufferedInputStream(new FileInputStream(childPath));
+    	BufferedInputStream goal = new BufferedInputStream(new FileInputStream(goalPath));  	
+    	child.skip(54);
+    	goal.skip(54);
+	   
+       //每一行颜色占用的字节数规定为4的整数倍
+       int skipnum = (bitcount * width / 8) % 4;
+       if (skipnum != 0) {
+           skipnum = 4 - skipnum;
+       }
+  	   //get every pixel
+       for (int i = height - 1; i >= 0; i--) {
+           for (int j = 0; j < width; j++) {
+               int goalblue = goal.read();
+               int goalgreen = goal.read();
+               int goalred = goal.read();
+               int childblue = child.read();
+               int childgreen = child.read();
+               int childred = child.read();
+               if(goalblue != childblue || goalgreen != childgreen || goalred != childred) {
+            	   goal.close();
+            	   child.close();
+            	   return false;
+               }
+          }
+            if (skipnum != 0) {
+            	goal.skip(skipnum); 
+                child.skip(skipnum);
+            }
+      }
+       goal.close();
+	   child.close();
+       return true;
+    }
 }
