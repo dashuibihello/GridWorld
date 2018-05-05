@@ -89,7 +89,7 @@ public class MazeBug extends Bug {
 			Flower flower = new Flower(getColor());
 			flower.putSelfInGrid(gr, temp);
 			//经过走过的路时将方向的行进次数减1
-			probability[back.getDirectionToward(this.getLocation())/90]--;
+			probability[back.getDirectionToward(temp)/90]--;
 			stepCount++;
 		}
 	}
