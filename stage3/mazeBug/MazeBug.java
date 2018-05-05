@@ -20,13 +20,19 @@ import javax.swing.JOptionPane;
 
 
 public class MazeBug extends Bug {
-	public Location next;
-	public boolean isEnd = false;
-	public Stack<ArrayList<Location>> crossLocation = new Stack<ArrayList<Location>>();
-	public Integer stepCount = 0;
+	//储存下一个位置
+	private Location next;
+	//判断是否结束
+	private boolean isEnd = false;
+	//存储已经经过的位置
+	private Stack<ArrayList<Location>> crossLocation = new Stack<ArrayList<Location>>();
+	//已经经过的步数
+	private Integer stepCount = 0;
 	//final message has been shown
-	boolean hasShown = false;
-	int[] probability = new int[4];
+	private boolean hasShown = false;
+	//作为判断可能性的数组
+	private int[] probability = new int[4];
+	//可以前进四个方向
 	private int direction[] = {Location.NORTH, Location.EAST,Location.SOUTH, Location.WEST};
 
 	/**
@@ -44,6 +50,7 @@ public class MazeBug extends Bug {
 	 * Moves to the next location of the square.
 	 */
 	public void act() {
+		//当步数为0时，需要向栈加入初始位置已经将所有方向的行进次数初始化为1
 		if(stepCount == 0) {
 			ArrayList<Location> locs = new ArrayList<Location>();
 			locs.add(this.getLocation());
@@ -53,29 +60,35 @@ public class MazeBug extends Bug {
 			}
 		}
 		boolean willMove = canMove();
-		if (isEnd == true) {
+		if (isEnd) {
 		//to show step count when reach the goal		
-			if (hasShown == false) {
+			if (!hasShown) {
 				String msg = stepCount.toString() + " steps";
 				JOptionPane.showMessageDialog(null, msg);
 				hasShown = true;
 			}
-		} else if (willMove) {
+		}
+		//如果可以前进就正常前进
+		else if (willMove) {
 			move();
 			//increase step count when move 
 			stepCount++;
-		} else {
+		}
+		//如果不可以前进则往回走
+		else {
 			Grid<Actor> gr = getGrid();
 			if(crossLocation.size() != 0) {
 				crossLocation.pop();
 			}
-			System.out.println(crossLocation.peek().toString());
+
 			ArrayList<Location> locs = crossLocation.peek();
 			Location back = locs.get(0);
 			setDirection(getLocation().getDirectionToward(back));
+			Location temp = this.getLocation();
 			moveTo(back);
 			Flower flower = new Flower(getColor());
-			flower.putSelfInGrid(gr, this.getLocation());
+			flower.putSelfInGrid(gr, temp);
+			//经过走过的路时将方向的行进次数减1
 			probability[back.getDirectionToward(this.getLocation())/90]--;
 			stepCount++;
 		}
@@ -90,9 +103,11 @@ public class MazeBug extends Bug {
 	 */
 	public ArrayList<Location> getValid(Location loc) {
 		Grid<Actor> gr = getGrid();
-		if (gr == null)
+		if (gr == null) {
 			return null;
+		}
 		ArrayList<Location> valid = new ArrayList<Location>();
+		//向四个方向查询
 		for (int i = 0; i < 4; i++) {
 			Location nextloc = getLocation().getAdjacentLocation(direction[i]);
 		    if (!gr.isValid(nextloc)) {
@@ -127,9 +142,12 @@ public class MazeBug extends Bug {
 				size += probability[tmp];
 
 			}
+			//创建随机数的种子
 			Random rand = new Random();
+			//将随机数范围设置为0-size
 			int num = rand.nextInt(size);
 			int oldnum = 0;
+			//如果随机数小于当前probability数组对应范围则选择
 			for (int i = 0; i < nextLocation.size(); i++) {
 				int tmp = (getLocation().getDirectionToward(nextLocation.get(i)))/90;
 				if(num < oldnum + probability[tmp]) {
@@ -158,10 +176,14 @@ public class MazeBug extends Bug {
 		}
 		Location loc = getLocation();
 		if (gr.isValid(next)) {
-		setDirection(getLocation().getDirectionToward(next));		
+		setDirection(getLocation().getDirectionToward(next));
+		//提取栈顶的ArrayList
 		ArrayList<Location> locs = crossLocation.pop();
+		//给提取的ArrayList后加入下一个位置
 		locs.add(next);
+		//将操作完成的ArrayList放回栈中
 		crossLocation.push(locs);
+		//新建一个只有下一个位置的ArrayList并放入栈中
 		ArrayList<Location> newlocs = new ArrayList<Location>();
 		newlocs.add(next);
 		crossLocation.push(newlocs);
@@ -173,3 +195,4 @@ public class MazeBug extends Bug {
 		flower.putSelfInGrid(gr, loc);		
 	}
 }
+
