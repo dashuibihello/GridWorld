@@ -1,21 +1,42 @@
-# Solution.java
-## estimateValue(JigsawNode jNode)
-### 采用的估值是以曼哈顿距离为主，以当前位置的错误的位码为辅。即当曼哈顿距离一样时，以当前位置错误的位码来判断
-	    public void estimateValue(JigsawNode jNode) {
-    	//所有放错位的数码与其正确位置的曼哈顿距离之和
-		int ManhattanDistance = 0; 
-		//放错位的数码的总和
-		int errorpos = 0;
-		int dimension = JigsawNode.getDimension();
-		for(int index =1 ; index< dimension*dimension; index++){
-			if (jNode.getNodesState()[index] != index && jNode.getNodesState()[0] != index) {
-				errorpos ++;
-				int x1 = (index-1) % dimension;
-				int y1 = (index-1) / dimension;
-				int x2 = (jNode.getNodesState()[index]-1) % dimension;
-				int y2 = (jNode.getNodesState()[index]-1) / dimension;
-				ManhattanDistance += Math.abs(x1-x2) + Math.abs(y1-y2);
-			}
-		}
-		jNode.setEstimatedValue(100 * ManhattanDistance + errorpos);
-    }
+# 实训总结
+## 16340221 王睿泽 895118352@qq.com
+
+----
+## 阶段一：项目启动
+本周学习并完成了以下几个内容
+
+1. 学习vi/vim编辑器的使用
+
+2. 熟悉JDK的环境并学习JAVA语言，完成HelloWorld的编译运行
+
+3. 熟悉Ant的环境并学习Ant，利用Ant实现HelloWorld的自动编译
+
+4. 学习Java语言，并编写Java小程序，完成要求请参考Java小程序完成要求
+
+5. 学习Junit，利用Ant、Junit测试通过HelloWorld
+
+6. 学习并配置SonarQube，利用SonarQube测试自己昨天写的Java小程序
+
+本阶段主要是为实训项目做基本的技术准备，学会使用Vi, JAVA, Ant 和 Junit, 以及熟悉GridWorld的使用。第一周的任务不是那么的重，但是这些内容不仅对于后面的实训有很大的帮助，还对于今后的学习和工作有很大的启发。以前在编程的过程中都是能出正确结果就万事大吉了，在学习SonarQube可以更加规范的进行编程。而在学习使用了junit之后也发现对java程序的debug更好的办法。
+
+------
+## 阶段二：基本任务
+本周完成了阶段2的Part2-Part5
+这个阶段主要是先通过回答问题了解并熟悉Gridworld中给的基础的类并进行改写。这部分的主要学习目的是进一步了解 GridWorld、掌握 Linux 环境下代码编写、程序调试，编码规范、掌握单元测试。我觉得在这一部分最重要的就是先看懂基础的类的实现方法并进行改写。在Part5中对这三个类的改写我觉得是比较有难度的，其中主要是对数据结构的理解，在理解了之后在进行实现就比较容易了。
+
+------
+## 阶段三：扩展任务
+本周完成了三个扩展任务ImageProcessing、MazeBug
+和N-Puzzle。
+
+
+在ImageProcessing主要是让我们学习对Bitmap图像的处理。在这里先了解了Bitmap文件结构，在了解了结构之后接下来的实现就比较容易了。在进行灰度图的处理时，如果将rgb的值分开算再相加与直接相加的值会有正负一的区别。
+
+在MazeBug中主要学习、理解和应用深度优先搜索算法。但是我觉得其中进阶部分的要求对于实验的优化并没有太大的作用。这个概率估计的方法对于原始位置和重点位置有一定的要求。
+
+在N-Puzzle中通过完成重排拼图游戏，加深对搜索策略的理解和应用。任务一只是实现基础的广度优先搜索而任务二则是利用启发式搜索优化。
+
+-----
+
+## 总结
+在实训之前还没有接触过实训使用的这些东西，这一次实训锻炼了自己的快速学习能力，对于以后的学习和工作有极大的帮助。通过每一阶段循序渐进的学习，现在对于编写java程序有一定的了解。并且通过第三阶段的学习对于dfs、bfs有了更深的理解并且启发式搜索有了一定的了解，但是由于时间有限，对于其中的一些使用和实现的还不够了解。希望在今后的学习中继续巩固。
