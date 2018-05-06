@@ -29,10 +29,11 @@ public class Solution extends Jigsaw {
         super(bNode, eNode);
     }
     
+    //获取这个节点的没走过的连接点
 	private Vector<JigsawNode> findFollowJNodes(JigsawNode jNode) {
 		Vector<JigsawNode> followJNodes = new Vector<JigsawNode>();
 		JigsawNode tempJNode;
-		for(int i=0; i<4; i++){
+		for(int i = 0; i < 4; i++){
 			tempJNode = new JigsawNode(jNode);
 			if(tempJNode.move(i) && !visitedList.contains(tempJNode) && !exploreList.contains(tempJNode))
 				followJNodes.addElement(tempJNode);
@@ -48,9 +49,12 @@ public class Solution extends Jigsaw {
      * @return 搜索成功时为true,失败为false
      */
     public boolean BFSearch(JigsawNode bNode, JigsawNode eNode) {
-        exploreList = new LinkedList<JigsawNode>();  // 用以保存已发现但未访问的节点
-        visitedList  = new HashSet<>(1000);    // 用以保存已发现的节点
-    	int searchedNodesNum = 0;           // 已访问节点数：用以记录所有访问过的节点的数量
+    	// 用以保存已发现但未访问的节点
+        exploreList = new LinkedList<JigsawNode>();  
+        // 用以保存已发现的节点
+        visitedList  = new HashSet<>(1000);
+        // 已访问节点数：用以记录所有访问过的节点的数量
+    	int searchedNodesNum = 0;           
         this.beginJNode = new JigsawNode(bNode);
         this.endJNode = new JigsawNode(eNode);
         this.currentJNode = null;
@@ -74,8 +78,8 @@ public class Solution extends Jigsaw {
         System.out.println("Jigsaw BFS Search Result:");
         System.out.println("Begin state:" + this.getBeginJNode().toString());
         System.out.println("End state:" + this.getEndJNode().toString());
-        //System.out.println("Solution Path: ");
-        //System.out.println(this.getSolutionPath());
+        System.out.println("Solution Path: ");
+        System.out.println(this.getSolutionPath());
         System.out.println("Total number of searched nodes:" + searchedNodesNum);
         System.out.println("Depth of the current node is:" + this.getCurrentJNode().getNodeDepth());
         return this.isCompleted();
@@ -90,11 +94,14 @@ public class Solution extends Jigsaw {
      * @param jNode - 要计算代价估计值的节点
      */
     public void estimateValue(JigsawNode jNode) {
-    	//所有 放错位的数码与其正确位置的距离之和 曼哈顿距离
+    	//所有放错位的数码与其正确位置的曼哈顿距离之和
 		int ManhattanDistance = 0; 
+		//放错位的数码的总和
+		int errorpos = 0;
 		int dimension = JigsawNode.getDimension();
 		for(int index =1 ; index< dimension*dimension; index++){
 			if (jNode.getNodesState()[index] != index && jNode.getNodesState()[0] != index) {
+				errorpos ++;
 				int x1 = (index-1) % dimension;
 				int y1 = (index-1) / dimension;
 				int x2 = (jNode.getNodesState()[index]-1) % dimension;
@@ -102,6 +109,6 @@ public class Solution extends Jigsaw {
 				ManhattanDistance += Math.abs(x1-x2) + Math.abs(y1-y2);
 			}
 		}
-		jNode.setEstimatedValue(ManhattanDistance);
+		jNode.setEstimatedValue(100 * ManhattanDistance + errorpos);
     }
 }
